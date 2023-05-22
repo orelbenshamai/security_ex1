@@ -3,10 +3,6 @@ from Cryptodome.Util.Padding import pad, unpad
 import sys
 
 
-
-
-
-
 def oracle(ciphertext, key, iv):
     try:
         decrypt(ciphertext, key, iv)
@@ -81,24 +77,11 @@ def main():
         cipher_text = bytes.fromhex(sys.argv[1])
         key = bytes.fromhex(sys.argv[2])
         iv = bytes.fromhex(sys.argv[3])
-        print(extract_plain_text(cipher_text, key, iv))
+        decrypted_bytes = extract_plain_text(cipher_text, key, iv)
+        num_of_bytes_used_for_padding = ord(decrypted_bytes[-1])
+        decrypted_text = decrypted_bytes[0:len(decrypted_bytes) - num_of_bytes_used_for_padding]
+        print(''.join(decrypted_text))
 
 
 if __name__ == '__main__':
     main()
-
-#
-# plaintext = b"Hello World"
-# padded_string_len = 16
-# # Pad the plaintext with PKCS7 padding
-# padded_plaintext = pad_string(plaintext, padded_string_len)
-# # # Define the block size and create the cipher object
-# block_size = DES.block_size
-# key = b'poaisfun'
-# zero_iv = bytes(block_size)
-# cipher = DES.new(key, DES.MODE_CBC, zero_iv)
-# # Encrypt the padded plaintext using CBC mode
-# ciphertext = cipher.encrypt(padded_plaintext)
-# print(ciphertext)
-# b = bytes.fromhex(sys.argv[1])
-# print(b)
